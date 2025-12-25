@@ -66,7 +66,7 @@ export default function NavBar() {
               transition-colors
               ${
                 selected === item.name
-                  ? "bg-[#161c2a] text-white"
+                  ? "bg-[#161c2a] text-white "
                   : "text-[#9ca3af] hover:bg-[#0b101c]"
               }
             `}
