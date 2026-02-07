@@ -33,7 +33,14 @@
   --radius-card: 12px;
   --radius-pill: 999px;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
 /* =========================
    Base Styles
    ========================= */
