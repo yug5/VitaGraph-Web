@@ -1,7 +1,7 @@
 "use client";
 import LivingGraph from "@/components/LivingGarph";
 import React from "react";
-
+import { chartData } from "@/lib/charData";
 export default function Dashboard() {
   const [selected, setSelected] = React.useState("Week");
 
@@ -54,17 +54,102 @@ export default function Dashboard() {
           <div className="row-span-3  bg-[#121523] border-2 rounded-lg border-[#171d31]  col-start-5 row-start-3">
             2
           </div>
-          <div className="bg-[#121523] border-2 rounded-lg border-[#171d31]   col-start-1 row-start-3">
-            3
+          <div className="bg-[#121523] border-2 rounded-lg border-[#171d31] col-start-1 row-start-3">
+            <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
+
+            <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
+              {(() => {
+                const total = chartData[0]?.avgSleepMin ?? 0;
+                const h = Math.floor(total / 60);
+                const m = total % 60;
+
+                return (
+                  <>
+                    <span className="ml-1 mr-0 ">
+                      {h}
+                      <span className="text-2xl ml-1">h</span>
+                    </span>
+                    <span className="m-2 ml-0">
+                      {m}
+                      <span className="text-2xl ml-1">m</span>
+                    </span>
+                  </>
+                );
+              })()}
+            </h2>
           </div>
+
           <div className="bg-[#121523] border-2 rounded-lg border-[#171d31]  col-start-2 row-start-3">
-            4
+            <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
+
+            <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
+              {(() => {
+                const total = chartData[0]?.avgSleepMin ?? 0;
+                const h = Math.floor(total / 60);
+                const m = total % 60;
+
+                return (
+                  <>
+                    <span className="ml-1 mr-0 ">
+                      {h}
+                      <span className="text-2xl ml-1">h</span>
+                    </span>
+                    <span className="m-2 ml-0">
+                      {m}
+                      <span className="text-2xl ml-1">m</span>
+                    </span>
+                  </>
+                );
+              })()}
+            </h2>
           </div>
           <div className="bg-[#121523] border-2 rounded-lg border-[#171d31]  col-start-3 row-start-3">
-            5
+            <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
+
+            <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
+              {(() => {
+                const total = chartData[0]?.avgSleepMin ?? 0;
+                const h = Math.floor(total / 60);
+                const m = total % 60;
+
+                return (
+                  <>
+                    <span className="ml-1 mr-0 ">
+                      {h}
+                      <span className="text-2xl ml-1">h</span>
+                    </span>
+                    <span className="m-2 ml-0">
+                      {m}
+                      <span className="text-2xl ml-1">m</span>
+                    </span>
+                  </>
+                );
+              })()}
+            </h2>
           </div>
           <div className="bg-[#121523] border-2 rounded-lg border-[#171d31] col-start-4 row-start-3">
-            6
+            <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
+
+            <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
+              {(() => {
+                const total = chartData[0]?.avgSleepMin ?? 0;
+                const h = Math.floor(total / 60);
+                const m = total % 60;
+
+                return (
+                  <>
+                    <span className="ml-1 mr-0 ">
+                      {h}
+                      <span className="text-2xl ml-1">h</span>
+                    </span>
+                    <span className="m-2 ml-0">
+                      {m}
+                      <span className="text-2xl ml-1">m</span>
+                    </span>
+                  </>
+                );
+              })()}
+            </h2>
           </div>
           <div className="col-span-2 bg-[#121523] border-2 rounded-lg border-[#171d31] row-span-2 row-start-4">
             7
