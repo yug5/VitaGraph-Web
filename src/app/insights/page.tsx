@@ -1,4 +1,11 @@
 import React from "react";
+import dynamic from "next/dynamic";
+import AIInsightsCard from "@/components/AIInsightCards";
+
+const HabitImpactScore = dynamic(() => import("@/components/HabitImpactScore"), { ssr: false });
+const SleepStepsCorrelation = dynamic(() => import("@/components/SleepStepsCorrelation"), { ssr: false });
+const WeeklyHealthScore = dynamic(() => import("@/components/WeeklyHealthScore"), { ssr: false });
+const WeeklyReportCard = dynamic(() => import("@/components/WeeklyReportCard"), { ssr: false });
 
 export default function Insight() {
   return (
@@ -12,7 +19,7 @@ export default function Insight() {
           <div className="flex items-center p-5 text-sm text-[#9ca3af]">
             Last synced 2 min ago
           </div>
-          <div className="w-10 h-10 flex items-center m-3 ml-0 justify-center bg-[#161c2a] rounded-full">
+          <div className="w-10 h-10 flex items-center m-3 ml-0 justify-center bg-[#161c2a] rounded-full cursor-pointer hover:bg-[#1f2937] transition-colors">
             <svg
               className="w-10 h-10 pt-3 fill-[#8e8e8e]"
               viewBox="0 0 448  912"
@@ -27,20 +34,20 @@ export default function Insight() {
       <div className="flex-1 py-5 px-10 pb-5 ">
         {/* grid */}
         <div className="grid grid-cols-5 grid-rows-4 gap-4 h-full w-full">
-          <div className="col-span-3 bg-[#121523] border-2 rounded-lg border-[#171d31] row-span-2">
-            1
+          <div className="col-span-3 row-span-2">
+            <WeeklyHealthScore />
           </div>
-          <div className="col-span-2 bg-[#121523] border-2 rounded-lg border-[#171d31] row-span-2 col-start-4">
-            2
+          <div className="col-span-2 row-span-2 col-start-4">
+            <AIInsightsCard />
           </div>
-          <div className="col-span-2 bg-[#121523] border-2 rounded-lg border-[#171d31] row-span-3 row-start-3">
-            3
+          <div className="col-span-2 row-span-3 row-start-3">
+            <SleepStepsCorrelation />
           </div>
-          <div className="col-span-2 bg-[#121523] border-2 rounded-lg border-[#171d31] row-span-3 col-start-3 row-start-3">
-            4
+          <div className="col-span-2 row-span-3 col-start-3 row-start-3">
+            <HabitImpactScore />
           </div>
-          <div className="row-span-3 bg-[#121523] border-2 rounded-lg border-[#171d31] col-start-5 row-start-3">
-            5
+          <div className="row-span-3 col-start-5 row-start-3">
+            <WeeklyReportCard />
           </div>
         </div>
       </div>

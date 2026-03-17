@@ -11,21 +11,33 @@ import {
 } from "recharts";
 
 import { chartData } from "@/lib/charData";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 
 const SLEEP_MAX = 600; // minutes (10 h)
 const STEPS_MAX = 15000;
 const SCREEN_MAX = 480; // minutes (8 h)
 
-const normalizedData = chartData.slice(0, 7).map((item: any) => ({
+const normalizedData = chartData.slice(0, 7).map((item: { sleepMinutes?: number; steps?: number; screenMinutes?: number;[key: string]: unknown }) => ({
   ...item,
   sleepN: Math.min((item.sleepMinutes ?? 0) / SLEEP_MAX, 1),
   stepsN: Math.min((item.steps ?? 0) / STEPS_MAX, 1),
   screenN: Math.min((item.screenMinutes ?? 0) / SCREEN_MAX, 1),
 }));
 
+const chartColors = {
+  sleep: "rgba(78,205,196,0.3)",
+  steps: "rgba(244,162,97,0.3)",
+  screen: "rgba(78,205,196,0.15)",
+  habit: "rgba(244,162,97,0.15)",
+};
+
 // ─── Custom Tooltip ───────────────────────────────────────────────────────────
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: { payload: { sleepMinutes?: number; steps?: number; screenMinutes?: number; habitsCompleted?: number; totalHabits?: number } }[];
+  label?: string;
+}
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (!active || !payload?.length) return null;
   const d = payload[0]?.payload;
 
@@ -36,70 +48,43 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   };
 
   return (
-    <div
-      style={{
-        background: "#0f172a",
-        border: "1px solid #1e293b",
-        borderRadius: 10,
-        padding: "12px 16px",
-        minWidth: 180,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
-      }}
-    >
-      <p
-        style={{
-          color: "#94a3b8",
-          fontSize: 12,
-          marginBottom: 8,
-          fontWeight: 600,
-        }}
-      >
+    <div className="bg-gradient-to-br from-[#111827] to-[#0d1520] border border-[#1e293b] rounded-[10px] py-3 px-4 min-w-[180px] shadow-[0_8px_32px_rgba(0,0,0,0.5)] will-change-transform">
+      <p className="text-[#94a3b8] text-xs mb-2 font-semibold">
         {label}
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+      <div className="flex flex-col gap-[7px]">
         {[
           {
-            color: "#2dd4bf",
+            color: "#4ECDC4",
             label: "Sleep",
             value: fmt(d?.sleepMinutes ?? 0),
           },
           {
-            color: "#38bdf8",
+            color: "#F4A261",
             label: "Steps",
             value: (d?.steps ?? 0).toLocaleString(),
           },
           {
-            color: "#fb923c",
+            color: "#4ECDC4",
             label: "Screen Time",
             value: fmt(d?.screenMinutes ?? 0),
           },
           {
-            color: "#94a3b8",
+            color: "#F4A261",
             label: "Habits Completed",
             value: `${d?.habitsCompleted ?? 0} / ${d?.totalHabits ?? 0}`,
           },
         ].map(({ color, label, value }) => (
           <div
             key={label}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              fontSize: 13,
-            }}
+            className="flex items-center gap-2 text-[13px]"
           >
             <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: color,
-                display: "inline-block",
-                flexShrink: 0,
-              }}
+              className="w-2 h-2 rounded-full inline-block shrink-0"
+              style={{ background: color }}
             />
-            <span style={{ color: "#cbd5e1", flex: 1 }}>{label}</span>
-            <span style={{ color: "#f1f5f9", fontWeight: 600 }}>{value}</span>
+            <span className="text-[#cbd5e1] flex-1">{label}</span>
+            <span className="text-[#f1f5f9] font-semibold">{value}</span>
           </div>
         ))}
       </div>
@@ -108,15 +93,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 // ─── Main Component ───────────────────────────────────────────────────────────
-export default function LivingGraph() {
+const LivingGraph = memo(function LivingGraph() {
   const [barGap, setBarGap] = useState(35);
-
-  const colors = {
-    sleep: "rgba(45,212,191,0.28)",
-    steps: "rgba(56,189,248,0.28)",
-    screen: "rgba(251,146,60,0.28)",
-    habit: "rgba(148,163,184,0.28)",
-  };
 
   useEffect(() => {
     const update = () => {
@@ -132,36 +110,24 @@ export default function LivingGraph() {
   }, []);
 
   return (
-    <div className="w-full h-[320px] p-2 flex flex-col">
+    <div className="w-full h-full flex flex-col bg-gradient-to-br from-[#111827] to-[#0d1520] rounded-[18px] border border-white/[0.06] p-4 sm:p-5 shadow-lg relative overflow-hidden will-change-transform">
       {/* ── Legend — sits ABOVE the chart, outside ResponsiveContainer ── */}
-      <div
-        style={{
-          display: "flex",
-          gap: 16,
-          margin: 10,
-          justifyContent: "flex-end",
-        }}
-      >
+      <div className="flex gap-4 m-2.5 justify-end">
         {[
-          { color: "#2dd4bf", label: "Sleep" },
-          { color: "#38bdf8", label: "Steps" },
-          { color: "#fb923c", label: "Screen Time" },
-          { color: "#94a3b8", label: "Habits Completed" },
+          { color: "#4ECDC4", label: "Sleep" },
+          { color: "#F4A261", label: "Steps" },
+          { color: "#4ECDC4", label: "Screen Time" },
+          { color: "#F4A261", label: "Habits Completed" },
         ].map(({ color, label }) => (
           <div
             key={label}
-            style={{ display: "flex", alignItems: "center", gap: 6 }}
+            className="flex items-center gap-[6px]"
           >
             <span
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: "50%",
-                background: color,
-                display: "inline-block",
-              }}
+              className="w-[10px] h-[10px] rounded-full inline-block"
+              style={{ background: color }}
             />
-            <span style={{ color: "#94a3b8", fontSize: 12 }}>{label}</span>
+            <span className="text-[#94a3b8] text-xs">{label}</span>
           </div>
         ))}
       </div>
@@ -202,7 +168,7 @@ export default function LivingGraph() {
               yAxisId="bar"
               dataKey="sleepN"
               name="Sleep"
-              fill={colors.sleep}
+              fill={chartColors.sleep}
               radius={[3, 3, 0, 0]}
               barSize={8}
             />
@@ -210,7 +176,7 @@ export default function LivingGraph() {
               yAxisId="bar"
               dataKey="stepsN"
               name="Steps"
-              fill={colors.steps}
+              fill={chartColors.steps}
               radius={[3, 3, 0, 0]}
               barSize={8}
             />
@@ -218,7 +184,7 @@ export default function LivingGraph() {
               yAxisId="bar"
               dataKey="screenN"
               name="Screen Time"
-              fill={colors.screen}
+              fill={chartColors.screen}
               radius={[3, 3, 0, 0]}
               barSize={8}
             />
@@ -226,7 +192,7 @@ export default function LivingGraph() {
               yAxisId="bar"
               dataKey="habitScore"
               name="Habits Completed"
-              fill={colors.habit}
+              fill={chartColors.habit}
               radius={[3, 3, 0, 0]}
               barSize={8}
             />
@@ -236,9 +202,9 @@ export default function LivingGraph() {
               yAxisId="line"
               type="monotone"
               dataKey="avgScore"
-              stroke="#2dd4bf"
+              stroke="#4ECDC4"
               strokeWidth={2}
-              dot={{ fill: "#2dd4bf", r: 4, strokeWidth: 0 }}
+              dot={{ fill: "#4ECDC4", r: 4, strokeWidth: 0 }}
               activeDot={{ r: 6, strokeWidth: 0 }}
             />
           </ComposedChart>
@@ -246,4 +212,6 @@ export default function LivingGraph() {
       </div>
     </div>
   );
-}
+});
+
+export default LivingGraph;

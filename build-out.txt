@@ -1,0 +1,30 @@
+
+> vita-web@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.23
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./src/app/layout.tsx
+3:1  Error: Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.  @typescript-eslint/ban-ts-comment
+
+./src/components/HabitAnalyticsWide.tsx
+9:3  Error: 'TooltipProps' is defined but never used.  @typescript-eslint/no-unused-vars
+33:45  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/LivingGarph.tsx
+20:57  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+35:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/mocData.ts
+1:5  Error: 'dash' is never reassigned. Use 'const' instead.  prefer-const
+19:5  Error: 'dashWeek' is never reassigned. Use 'const' instead.  prefer-const
+30:5  Error: 'habit' is never reassigned. Use 'const' instead.  prefer-const
+37:5  Error: 'prog' is never reassigned. Use 'const' instead.  prefer-const
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules

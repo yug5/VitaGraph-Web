@@ -1,10 +1,13 @@
-"use client";
-import LivingGraph from "@/components/LivingGarph";
 import React from "react";
+import dynamic from "next/dynamic";
 import { chartData } from "@/lib/charData";
-export default function Dashboard() {
-  const [selected, setSelected] = React.useState("Week");
+import TimeSelector from "@/components/TimeSelector";
 
+const LivingGraph = dynamic(() => import("@/components/LivingGarph"), { ssr: false });
+const HabitAnalytics = dynamic(() => import("@/components/HabitAnalytics"), { ssr: false });
+const HabitAnalyticsWide = dynamic(() => import("@/components/HabitAnalyticsWide"), { ssr: false });
+
+export default function Dashboard() {
   return (
     <div className="flex flex-col h-full">
       {/* top part */}
@@ -16,7 +19,7 @@ export default function Dashboard() {
           <div className="flex items-center p-5 text-sm text-[#9ca3af]">
             Last synced 2 min ago
           </div>
-          <div className="w-10 h-10 flex items-center m-3 ml-0 justify-center bg-[#161c2a] rounded-full">
+          <div className="w-10 h-10 flex items-center m-3 ml-0 justify-center bg-[#161c2a] rounded-full cursor-pointer hover:bg-[#1f2937] transition-colors">
             <svg
               className="w-10 h-10 pt-3 fill-[#8e8e8e]"
               viewBox="0 0 448  912"
@@ -29,32 +32,18 @@ export default function Dashboard() {
       </div>
       <div>
         {/* button */}
-        <div className="flex flex-row space-x-1 m-4 ml-0 px-10 ">
-          {["Week", "Month", "Custom"].map((option) => (
-            <button
-              key={option}
-              className={`px-4 py-2 text-md rounded-full  ${
-                selected === option
-                  ? "bg-[#171d31] text-white"
-                  : " text-[#9ca3af]"
-              }`}
-              onClick={() => setSelected(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <TimeSelector />
       </div>
       <div className="flex-1 px-10 pb-5">
         {/* grid */}
-        <div className="grid grid-cols-5 grid-rows-5 gap-4 w-full h-full">
-          <div className="col-span-5 bg-[#121523] border-2 rounded-lg border-[#171d31]    row-span-2">
+        <div className="grid grid-cols-5 grid-rows-4 gap-4 w-full h-full">
+          <div className="col-span-5 row-span-2">
             <LivingGraph />
           </div>
-          <div className="row-span-3  bg-[#121523] border-2 rounded-lg border-[#171d31]  col-start-5 row-start-3">
-            2
+          <div className="row-span-3 col-start-5 row-start-3">
+            <HabitAnalytics />
           </div>
-          <div className="bg-[#121523] border-2 rounded-lg border-[#171d31] col-start-1 row-start-3">
+          <div className="col-start-1 row-start-3 w-full h-full flex flex-col bg-gradient-to-br from-[#111827] to-[#0d1520] rounded-[18px] border border-white/[0.06] p-4 sm:p-5 shadow-lg relative overflow-hidden will-change-transform">
             <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
 
             <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
@@ -79,7 +68,7 @@ export default function Dashboard() {
             </h2>
           </div>
 
-          <div className="bg-[#121523] border-2 rounded-lg border-[#171d31]  col-start-2 row-start-3">
+          <div className="col-start-2 row-start-3 w-full h-full flex flex-col bg-gradient-to-br from-[#111827] to-[#0d1520] rounded-[18px] border border-white/[0.06] p-4 sm:p-5 shadow-lg relative overflow-hidden will-change-transform">
             <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
 
             <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
@@ -103,7 +92,7 @@ export default function Dashboard() {
               })()}
             </h2>
           </div>
-          <div className="bg-[#121523] border-2 rounded-lg border-[#171d31]  col-start-3 row-start-3">
+          <div className="col-start-3 row-start-3 w-full h-full flex flex-col bg-gradient-to-br from-[#111827] to-[#0d1520] rounded-[18px] border border-white/[0.06] p-4 sm:p-5 shadow-lg relative overflow-hidden will-change-transform">
             <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
 
             <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
@@ -127,7 +116,7 @@ export default function Dashboard() {
               })()}
             </h2>
           </div>
-          <div className="bg-[#121523] border-2 rounded-lg border-[#171d31] col-start-4 row-start-3">
+          <div className="col-start-4 row-start-3 w-full h-full flex flex-col bg-gradient-to-br from-[#111827] to-[#0d1520] rounded-[18px] border border-white/[0.06] p-4 sm:p-5 shadow-lg relative overflow-hidden will-change-transform">
             <h1 className="flex text-2xl p-5 pb-2  items-center">Avg Sleep</h1>
 
             <h2 className="flex text-4xl pl-5 font-semibold items-center gap-2">
@@ -151,10 +140,10 @@ export default function Dashboard() {
               })()}
             </h2>
           </div>
-          <div className="col-span-2 bg-[#121523] border-2 rounded-lg border-[#171d31] row-span-2 row-start-4">
-            7
+          <div className="col-span-2 row-span-2 row-start-4">
+            <HabitAnalyticsWide />
           </div>
-          <div className="col-span-2 bg-[#121523] border-2 rounded-lg border-[#171d31] row-span-2  col-start-3 row-start-4">
+          <div className="col-span-2 row-span-2 col-start-3 row-start-4 w-full h-full flex flex-col bg-gradient-to-br from-[#111827] to-[#0d1520] rounded-[18px] border border-white/[0.06] p-4 sm:p-5 shadow-lg relative overflow-hidden will-change-transform">
             8
           </div>
         </div>
